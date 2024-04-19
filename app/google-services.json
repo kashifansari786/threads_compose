@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "657855205126",
+    "project_id": "threadclone-18bea",
+    "storage_bucket": "threadclone-18bea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657855205126:android:bba0e66bfcf0b631f11887",
+        "android_client_info": {
+          "package_name": "com.kashif.thread_clone_compose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUsCsLLNZKBbGu5fNu9BP3T-so7LioAIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
