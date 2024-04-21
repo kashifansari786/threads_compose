@@ -28,7 +28,10 @@ import com.kashif.thread_clone_compose.viewmodel.MainViewModel
  */
 
 @Composable
-fun BottomNav(navController: NavHostController, viewModel: MainViewModel){
+fun BottomNav(
+    navController: NavHostController,
+    viewModel: MainViewModel
+){
 
     val navController1= rememberNavController()
     Scaffold(bottomBar = { MyBottomBar(navController1) }) {
@@ -49,7 +52,7 @@ fun BottomNav(navController: NavHostController, viewModel: MainViewModel){
                 Search(navController, viewModel)
             }
             composable(Routes.AddThreads.routes){
-                AddThreads(navController, viewModel)
+                AddThreads(navController1, viewModel)
             }
             composable(Routes.BottomNav.routes){
                 BottomNav(navController1, viewModel)

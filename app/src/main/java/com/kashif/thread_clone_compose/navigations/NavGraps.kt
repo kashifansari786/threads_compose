@@ -20,9 +20,12 @@ import com.kashif.thread_clone_compose.viewmodel.MainViewModel
  */
 
 @Composable
-fun NavGraph(navController: NavHostController, viewModel: MainViewModel){
+fun NavGraph(
+    navController: NavHostController,
+    viewModel: MainViewModel
+){
 
-        NavHost(navController = navController, startDestination = Routes.Login.routes) {
+        NavHost(navController = navController, startDestination = Routes.Splash.routes) {
             composable(Routes.Register.routes){
                 Register(navController,viewModel)
             }

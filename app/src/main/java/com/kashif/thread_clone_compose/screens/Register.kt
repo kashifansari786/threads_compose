@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,18 +18,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -92,31 +94,33 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
 
         }
     }
-    val firebaseUser by viewModel.firebaseUser.observeAsState(null)
+    //val firebaseUser by viewModel.firebaseUser.observeAsState(null)
+    val firebaseUser=viewModel.userData.value
     LaunchedEffect(key1 = firebaseUser) {
-        if(firebaseUser!=null){
+        if(firebaseUser!=null && !firebaseUser.uid.isNullOrEmpty()){
             navHostController.navigate(Routes.BottomNav.routes){
                 popUpTo(navHostController.graph.startDestinationId)
                 launchSingleTop=true
             }
         }
-        else {
-            navHostController.navigate(Routes.Login.routes) {
-                popUpTo(navHostController.graph.startDestinationId)
-                launchSingleTop = true
-            }
-        }
+//        else {
+//            navHostController.navigate(Routes.Login.routes) {
+//                popUpTo(navHostController.graph.startDestinationId)
+//                launchSingleTop = true
+//            }
+//        }
     }
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        .padding(20.dp)
+        .verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
         Text(text = "Register", fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
-        Box(modifier = Modifier.height(25.dp))
+        Box(modifier = Modifier.height(15.dp))
         Image(painter = if(imageUri==null) painterResource(id = R.drawable.ic_launcher_background) else rememberAsyncImagePainter(
             model = imageUri
         ), contentDescription = "person", modifier = Modifier
-            .size(96.dp)
+            .size(90.dp)
             .clip(
                 CircleShape
             )
@@ -131,7 +135,7 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
                 else
                     permissionLauncher.launch(permissionToRequest)
             }, contentScale = ContentScale.Crop )
-        Box(modifier = Modifier.height(25.dp))
+        Box(modifier = Modifier.height(15.dp))
         OutlinedTextField(value = name, onValueChange = { name = it }, label = {
             Text(text = "Name",)
         }, keyboardOptions = KeyboardOptions(
@@ -139,7 +143,7 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
         ), singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        Box(modifier = Modifier.height(10.dp))
+
         OutlinedTextField(value = userName, onValueChange = { userName = it }, label = {
             Text(text = "UserName",)
         }, keyboardOptions = KeyboardOptions(
@@ -147,7 +151,7 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
         ), singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        Box(modifier = Modifier.height(10.dp))
+
         OutlinedTextField(value = email, onValueChange = { email = it }, label = {
             Text(text = "Email",)
         }, keyboardOptions = KeyboardOptions(
@@ -155,7 +159,7 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
         ), singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        Box(modifier = Modifier.height(10.dp))
+
         OutlinedTextField(value = password, onValueChange = { password = it }, label = {
             Text(text = "Password",)
         }, keyboardOptions = KeyboardOptions(
@@ -163,7 +167,7 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
         ), singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        Box(modifier = Modifier.height(10.dp))
+
         OutlinedTextField(value = bio, onValueChange = { bio = it }, label = {
             Text(text = "Bio",)
         }, keyboardOptions = KeyboardOptions(
@@ -171,11 +175,11 @@ fun Register(navHostController: NavHostController, viewModel: MainViewModel){
         ), singleLine = false,
             modifier = Modifier.fillMaxWidth()
         )
-        Box(modifier = Modifier.height(30.dp))
+        Box(modifier = Modifier.height(20.dp))
         ElevatedButton(onClick = {
-                if(name.isEmpty() or email.isEmpty() or bio.isEmpty() or password.isEmpty() or imageUri.toString().isEmpty()){
+                if(name.isEmpty() or email.isEmpty() or bio.isEmpty() or password.isEmpty() or imageUri.toString().isEmpty())
                     Toast.makeText(context,"Please fill all details",Toast.LENGTH_LONG).show()
-                }else
+                else
                     viewModel.registerUser(email=email,password=password,name=name,bio=bio,userName=userName, imageUri=imageUri!!, context = context)
         }, modifier = Modifier
             .fillMaxWidth()

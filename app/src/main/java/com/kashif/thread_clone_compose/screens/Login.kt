@@ -1,5 +1,7 @@
 package com.kashif.thread_clone_compose.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -41,6 +45,19 @@ fun Login(navHostController: NavHostController, viewModel: MainViewModel){
     var password by  remember {
         mutableStateOf("")
     }
+    val context= LocalContext.current
+    val firebaseUser=viewModel.userData.value
+   // val firebaseUser by viewModel.firebaseUser.observeAsState(null)
+    Log.d("inside_firebase","login_"+firebaseUser?.uid)
+    LaunchedEffect(key1 = firebaseUser) {
+        if(firebaseUser!=null){
+            navHostController.navigate(Routes.BottomNav.routes){
+                popUpTo(navHostController.graph.startDestinationId)
+                launchSingleTop=true
+            }
+        }
+
+    }
     Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text(text = "Login", fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
         Box(modifier = Modifier.height(50.dp))
@@ -59,7 +76,10 @@ fun Login(navHostController: NavHostController, viewModel: MainViewModel){
             modifier = Modifier.fillMaxWidth())
         Box(modifier = Modifier.height(30.dp))
         ElevatedButton(onClick = {
-
+            if(email.isNullOrEmpty() or password.isNullOrEmpty())
+                Toast.makeText(context,"Please fill all details",Toast.LENGTH_SHORT).show()
+            else
+                viewModel.loginUser(email,password,context)
         }, modifier = Modifier.fillMaxWidth().padding(30.dp)) {
             Text(text = "Login", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
         }

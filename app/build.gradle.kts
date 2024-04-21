@@ -86,6 +86,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.firebase.bom)
     //livedata
-    implementation(libs.androidx.runtime.livedata)
+//    implementation(libs.androidx.runtime.livedata)
 
 }
